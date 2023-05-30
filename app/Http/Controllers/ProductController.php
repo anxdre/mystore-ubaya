@@ -134,10 +134,9 @@ class ProductController extends Controller
         //
     }
 
-    public function ambilByCategory($nama)
-    {
-        $datas = Product::ambilByNamaCategory($nama);
-        return view('product.listByCategory',['datas'=>$datas]);
+    public function getByCategory($id){
+        $listOfProduct = Product::query()->get()->where('category_id',$id);
+        return view('home',compact(['listOfProduct','id']));
     }
 
     public function showInfo()

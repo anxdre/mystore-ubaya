@@ -106,4 +106,8 @@ class CategoryController extends Controller
             'msg'=>view('category.showProducts',compact('nama','data'))->render()
         ),200);
     }
+
+    public static function getAllAsData(){
+        return DB::select(DB::raw("select * from categories"));
+    }
 }

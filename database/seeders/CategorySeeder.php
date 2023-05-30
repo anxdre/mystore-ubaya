@@ -18,31 +18,11 @@ class CategorySeeder extends Seeder
     {
         //
         DB::table('categories')->insert([
-            'name' => 'Kecantikan',
+            'name' => 'Trending',
         ]);
 
         DB::table('categories')->insert([
-            'name' => 'Alat Rumah Tangga',
-        ]);
-
-        DB::table('categories')->insert([
-            'name' => 'Bahan Mentah',
-        ]);
-
-        DB::table('categories')->insert([
-            'name' => 'Bumbu Dapur',
-        ]);
-
-        DB::table('categories')->insert([
-            'name' => 'Permainan',
-        ]);
-
-        DB::table('categories')->insert([
-            'name' => 'Dress',
-        ]);
-
-        DB::table('categories')->insert([
-            'name' => 'Kaos',
+            'name' => 'Baju',
         ]);
 
         DB::table('categories')->insert([
@@ -50,11 +30,23 @@ class CategorySeeder extends Seeder
         ]);
 
         DB::table('categories')->insert([
-            'name' => 'Tas',
+            'name' => 'Peralatan Makan',
+        ]);
+
+        DB::table('categories')->insert([
+            'name' => 'Mainan',
         ]);
 
         DB::table('categories')->insert([
             'name' => 'Sepatu',
+        ]);
+
+        DB::table('categories')->insert([
+            'name' => 'Tas',
+        ]);
+
+        DB::table('categories')->insert([
+            'name' => 'Lainnya',
         ]);
 
     }

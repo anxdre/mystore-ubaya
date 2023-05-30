@@ -16,18 +16,7 @@ class Category extends Model
 
     public function products()
     {
-        //bisa salah satu
-        // return $this->hasMany(Product::class,'category_id');
         return $this->hasMany(products::class,'category_id','id');
     }
 
-    public function getAll()
-    {
-       return $this->getAll();
-    }
-
-    public function __toString()
-    {
-        return $this->name;
-    }
 }
