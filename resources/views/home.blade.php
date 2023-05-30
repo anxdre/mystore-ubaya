@@ -20,7 +20,7 @@
                         <div class="article-title">
                             <h2><a href="#">{{$data->name}}</a></h2>
                         </div>
-                        <p>{{$data->harga_jual}}</p>
+                        <p>Rp. {{$data->harga_jual}}</p>
                         <div class="article-cta">
                             <a href="#">Read More <i class="fas fa-chevron-right"></i></a>
                         </div>

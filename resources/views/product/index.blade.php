@@ -1,109 +1,108 @@
-<!-- Halo selamat datang di <?php echo $title ?> <br/>
-Halo selamat datang di  {{$title}} <br/>
+@extends('layouts.app')
+@section('title','Manage Product')
+@section('menu-product','active')
+@section('content')
 
-Berikut ini isi table anda.
-<table>
-.....
-</table> -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header justify-content-between">
+                    <h4>Manage Item</h4>
+                    <a href="/product/create" class="btn btn-icon icon-left btn-warning"><i class="fas fa-plus"></i>Add
+                        New Item</a>
+                </div>
+                <div class="card-body">
+                    <div class="float-left">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
-@extends('utama')
-@section('isi')
+                    <div class="clearfix mb-3"></div>
 
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            @forelse($listOfProduct as $product)
+                                @once
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Author</th>
+                                        <th>Created At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                @endonce
+                                <tr>
+                                    <td>{{$product->name}}</td>
+                                    <td>{{$product->category->name}}</td>
+                                    <td>
+                                        <a href="#">
+                                            <div class="d-inline-block ml-1">{{$product->supplier->name}}</div>
+                                        </a>
+                                    </td>
+                                    <td>{{$product->created_at}}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-info"><i class="fas fa-info-circle"></i></a>
+                                        <a href="#" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
+                                        <a href="#" class="btn btn-icon btn-danger"><i class="fas fa-times"></i></a>
+                                    </td>
+                                </tr>
 
-
-<div class="container">
-  <h2>Table Products</h2>
-  <p></p>            
-  <a class="btn btn-info" data-toggle="modal" href="#disclaimer">Disclaimer</a>
-  <table class="table table-striped">
-    <thead>
-    <?php echo $title ?>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Harga Jual</th>
-        <th>Harga Produksi</th>
-        <th>Stok</th>
-        <th>Created At</th>
-        <th>Updated At</th>
-        <!-- <th>Category ID</th>
-        <th>Supplier ID</th> -->
-      </tr>
-    </thead>
-    <tbody>
-        @foreach($queryModel as $d)
-      <tr>
-        <td>{{ $d->id }}</td>
-        <td>{{$d->name}}</td>
-        <td>{{$d->harga_jual}}</td>
-        <td>{{$d->harga_produksi}}</td>
-        <td>{{$d->stok}}</td>
-        <td>{{$d->created_at}}</td>
-        <td>{{$d->updated_at}}</td>
-        <!-- <td>{{$d->category_id}}-{{$d->category->name}}</td>
-        <td>{{$d->supplier_id}}-{{$d->supplier->name}}</td> -->
-
-
-<td>
-<a class="btn btn-primary"  
-  data-toggle="modal" href="#showphoto_{{$d->id}}">Show Photo</a>  
-<div class="modal fade" id="showphoto_{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-  <div class="modal-dialog">
-     <div class="modal-content">
-        <div class="modal-header">
-           <h4 class="modal-title">{{$d->name}}</h4>
+                            @empty
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>Ups ...</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="alert alert-primary alert-has-icon">
+                                                <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
+                                                <div class="alert-body">
+                                                    <div class="alert-title">Data masih kosong</div>
+                                                    Yuk tambahkan barangmu sekarang juga 😊
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforelse
+                        </table>
+                    </div>
+                    <div class="float-right">
+                        <nav>
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">3</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-           <img src='image/{{ $d->id }}.jpg' height='200px' />
-         
-        </div>
-	<div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-     </div>
-  </div>
-</div>
-</td>
-
-
-      </tr>
-      @endforeach
-     
-    </tbody>
-  </table>
-  <div class="modal fade" id="disclaimer" tabindex="-1" role="basic" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-          <h4 class="modal-title">DISCLAIMER</h4>
-        </div>
-        <div class="modal-body">
-          Pictures shown are for illustration purpose only. Actual product may vary due to product enhancement.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-   </div>
-</div>
+    </div>
+    </div>
 @endsection
-
-
-@section('javascript')
-<script>
-function showInfo()
-{
-  $.ajax({
-    type:'POST',
-    url:'{{route("products.showInfo")}}',
-    data:'_token=<?php echo csrf_token() ?>',
-    success: function(data){
-       $('#showinfo').html(data.msg)
-    }
-  });
-}
-</script>
-@endsection
-
-

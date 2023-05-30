@@ -39,7 +39,7 @@ Route::get('/',function (){
 //
 //Route::post('/produk/showInfo',[ProductController::class,'showInfo'])->name('products.showInfo');
 //
-//Route::resource('product', ProductController::class);
+Route::resource('product', ProductController::class)->middleware('auth');
 //Route::resource('category', CategoryController::class);
 //Route::resource('supplier', SupplierController::class);
 //

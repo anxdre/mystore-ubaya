@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -17,32 +18,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-        // echo "Hi masuk controller product dengan index";
-
-        //untuk query dengan RAW
-        // $queryModel = DB::select(DB::raw("select * from products p inner join categories c on p.category_id=c.id inner join suppliers s on p.supplier_id=s.id"));
-        //$queryModel = DB::select(DB::raw("select * from products));
-        // dd($queryRaw);
-
-        //untuk query builder
-        // $queryModel = DB::table('products')->get();
-        // dd($queryBuilder);
-
-        // foreach($queryRaw as $d){
-        //     echo $d->name.'-'.$d->category_id;
-        // }
-
-        // //untuk query dengan model
-        $queryModel = Product::all();
-        // $sortedData = $data->sortBy('price');
-        $title='Web Framework';
-        // dd($queryModel);
-        // foreach($queryModel as $d){
-        //     echo $d->name.'-'.$d->category_id;
-        // }
-
-        return view('product.index', compact('queryModel','title'));
+        $userId = Auth::id();
+        $listOfProduct = Product::query()->get()->where('supplier_id', $userId);
+        return view('product.index', compact('listOfProduct'));
 
     }
 
@@ -53,33 +31,39 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $dataCategory = Category::all();
-        return view('product.add',compact('dataCategory'));
+        return view('product.add');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $data =  new Product();
-        $data->name = $request->get('productName');
-        $data->harga_jual = $request->get('productPrice');
-        $data->harga_produksi = $request->get('productCost');
-        $data->stok = $request->get('productStock');
-        $data->category_id = 2;
-        $data->supplier_id = 2;
+        Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'integer', 'max:255'],
+            'stock' => ['required', 'integer', 'max:255',]
+        ]);
+
+
+        $data = new Product();
+        $data->name = $request->get('title');
+        $data->harga_jual = $request->get('price');
+        $data->harga_produksi = $request->get('price');
+        $data->stok = $request->get('stock');
+        $data->category_id = $request->get('category');
+        $data->supplier_id = Auth::id();
         $data->save();
-        return back()->with('status','Data sukses tersimpan');
+        return back()->with('status', 'Data sukses tersimpan');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -97,13 +81,13 @@ class ProductController extends Controller
         //                 ->where('id',$id)
         //                 ->first();
 
-        return view('product.show',compact('data'));
+        return view('product.show', compact('data'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -114,8 +98,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -126,7 +110,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -134,9 +118,10 @@ class ProductController extends Controller
         //
     }
 
-    public function getByCategory($id){
-        $listOfProduct = Product::query()->get()->where('category_id',$id);
-        return view('home',compact(['listOfProduct','id']));
+    public function getByCategory($id)
+    {
+        $listOfProduct = Product::query()->orderBy('created_at','DESC')->where('category_id', $id)->get();
+        return view('home', compact(['listOfProduct', 'id']));
     }
 
     public function showInfo()
@@ -147,11 +132,11 @@ class ProductController extends Controller
         //             Did you know? <br>This message is sent by a Controller.'</div>"
         // ),200);
 
-        $result=Product::orderBy('harga_jual','DESC')->first();
+        $result = Product::orderBy('harga_jual', 'DESC')->first();
         return response()->json(array(
-            'status'=>'oke',
-            'msg'=>"<div class='alert alert-info'>
-            Did you know? <br>The most expensive product is ". $result->name . "</div>"
-        ),200);
+            'status' => 'oke',
+            'msg' => "<div class='alert alert-info'>
+            Did you know? <br>The most expensive product is " . $result->name . "</div>"
+        ), 200);
     }
 }
